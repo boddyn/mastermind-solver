@@ -3,5 +3,5 @@ Created on Tue Mar 15 15:17:46 2016
 
 @author: boddyn
 """
-
-print 'Heyo'
+strings = ['Heyo', 'Ahi', 'Hello World', 'Hi Frau Nagel']
+print strings[0]
