@@ -15,8 +15,22 @@ class MastermindGame:
     def solution(self):
         return MastermindGame.solution
         
+    def makeMove(self, move):   
+        result = [0]*2        
+        for x in range(0, len(MastermindGame.solution)):
+            if(move[x] == MastermindGame.solution[x]):
+                result[0] += 1
+            else:
+                found = False
+                for y in range (0, len(MastermindGame.solution)):
+                    if(move[x] == MastermindGame.solution[y] and not found):
+                        result[1] +=1
+                        found = True
+        return result
+        
 def main():
     x = MastermindGame(6, 4)
     print x.solution
+    print x.makeMove([1,2,3,4])
     
 main()
