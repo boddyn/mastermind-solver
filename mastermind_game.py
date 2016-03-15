@@ -1,36 +1,51 @@
 import random
+import math
 class MastermindGame:
 
-    solution = [0]
     guesses = [[0]]
 
     def __init__(self, numPeople, numTents):
         self.numPeople = numPeople
         self.numTents = numTents
-        MastermindGame.solution = [numTents]
-        MastermindGame.solution = [i for i in range(0, numPeople)]
-        random.shuffle(MastermindGame.solution)
-        MastermindGame.solution = MastermindGame.solution[:numTents]
+        self.__solution = [numTents]
+        self.__solution = [i for i in range(1, numPeople + 1)]
+        random.shuffle(self.__solution)
+        self.__solution = self.__solution[:numTents]
         
-    def solution(self):
-        return MastermindGame.solution
+    def makeMove(self, move):
+        if type(move) is list and len(move) == len(self.__solution):
+            result = [0]*2
+            for x in range(0, len(self.__solution)):
+                if(move[x] == self.__solution[x]):
+                    result[0] += 1
+                else:
+                    for y in range (0, len(self.__solution)):
+                        if(move[x] == self.__solution[y]):
+                            result[1] +=1
+                            break
+            return result
+        else:
+            return 'move parameter is invalid'
         
-    def makeMove(self, move):   
-        result = [0]*2        
-        for x in range(0, len(MastermindGame.solution)):
-            if(move[x] == MastermindGame.solution[x]):
-                result[0] += 1
-            else:
-                found = False
-                for y in range (0, len(MastermindGame.solution)):
-                    if(move[x] == MastermindGame.solution[y] and not found):
-                        result[1] +=1
-                        found = True
-        return result
-        
+def getAvgFirstGuess(numPeople, numTents, numGuesses):
+    people = numPeople
+    tents = numTents
+    guesses = numGuesses
+    results = [0] * guesses
+    for j in range(0, guesses):
+        i = 0
+        result = [0,0]
+        while result[0] != tents:
+            x = MastermindGame(people, tents)
+            result = x.makeMove([x for x in range(1, tents + 1)])
+            i += 1
+        results[j] = i
+    average = (sum(results) * 1.0) / len(results)
+    print 'Average should approach: ' + str(math.factorial(people)/math.factorial(people - tents))
+    print 'Average: ' + str(average)
+    return average
+
 def main():
-    x = MastermindGame(6, 4)
-    print x.solution
-    print x.makeMove([1,2,3,4])
+    getAvgFirstGuess(6, 4, 1000)
     
 main()
