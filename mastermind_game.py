@@ -37,7 +37,7 @@ def getAvgFirstGuess(numPeople, numTents, numGuesses):
         result = [0,0]
         while result[0] != tents:
             x = MastermindGame(people, tents)
-            result = x.makeMove([x for x in range(1, tents + 1)])
+            result = x.makeMove([w for w in range(1, tents + 1)])
             i += 1
         results[j] = i
     average = (sum(results) * 1.0) / len(results)
