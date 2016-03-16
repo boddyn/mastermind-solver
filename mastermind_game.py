@@ -2,30 +2,34 @@ import random
 import math
 class MastermindGame:
 
-    guesses = [[0]]
-
     def __init__(self, numPeople, numTents):
-        self.numPeople = numPeople
-        self.numTents = numTents
-        self.__solution = [numTents]
-        self.__solution = [i for i in range(1, numPeople + 1)]
+        tents = 4
+        people = 6
+        if type(numPeople) is int and numPeople > 0:
+            people = numPeople
+        if type(numTents) is int and numTents > 0:
+            tents = numTents
+        self.__solution = [tents]
+        self.__solution = [i for i in range(1, people + 1)]
         random.shuffle(self.__solution)
-        self.__solution = self.__solution[:numTents]
+        self.__solution = self.__solution[:tents]
+        self.__guesses = [[]]
         
-    def makeMove(self, move):
-        if type(move) is list and len(move) == len(self.__solution):
+    def makeGuess(self, guess):
+        if type(guess) is list and len(guess) == len(self.__solution):
+            self.__guesses.append(guess)
             result = [0]*2
             for x in range(0, len(self.__solution)):
-                if(move[x] == self.__solution[x]):
+                if(guess[x] == self.__solution[x]):
                     result[0] += 1
                 else:
                     for y in range (0, len(self.__solution)):
-                        if(move[x] == self.__solution[y]):
+                        if(guess[x] == self.__solution[y]):
                             result[1] +=1
                             break
             return result
         else:
-            return 'move parameter is invalid'
+            return 'invalid guess'
         
 def getAvgFirstGuess(numPeople, numTents, numGuesses):
     people = numPeople
@@ -37,7 +41,7 @@ def getAvgFirstGuess(numPeople, numTents, numGuesses):
         result = [0,0]
         while result[0] != tents:
             x = MastermindGame(people, tents)
-            result = x.makeMove([w for w in range(1, tents + 1)])
+            result = x.makeGuess([w for w in range(1, tents + 1)])
             i += 1
         results[j] = i
     average = (sum(results) * 1.0) / len(results)
@@ -46,6 +50,6 @@ def getAvgFirstGuess(numPeople, numTents, numGuesses):
     return average
 
 def main():
-    getAvgFirstGuess(6, 4, 1000)
+    getAvgFirstGuess(6, 4, 100)
     
 main()
