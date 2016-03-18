@@ -31,7 +31,27 @@ class MastermindGame:
             return result
         else:
             return 'invalid guess'
-        
+            
+def validateGuess(guesses = [[]], nextGuess = []):
+    valid = True
+    for i in range(0, len(guesses)):
+        pastGuess = guesses[i]
+        pastPositions = pastGuess.positions
+        sameLocations = 0
+        differentLocations = 0
+        j = 0
+        while j < len(pastPositions) and sameLocations <= pastGuess.correctPositions and differentLocations <= pastGuess.jumbledPositions:
+            if pastPositions[j] == nextGuess[j]:
+                sameLocations += 1
+            else:
+                for k in range(0, len(nextGuess)):
+                    if pastPositions[j] == nextGuess[k]:
+                        differentLocations += 1
+            j += 1
+        if pastGuess.correctPositions != sameLocations or pastGuess.jumbledPositions != differentLocations:
+            valid = False
+    return valid        
+    
 def getAvgFirstGuess(numPeople, numTents, numGuesses):
     people = numPeople
     tents = numTents
@@ -49,11 +69,22 @@ def getAvgFirstGuess(numPeople, numTents, numGuesses):
     print 'Average should approach: ' + str(math.factorial(people)/math.factorial(people - tents))
     print 'Average: ' + str(average)
     return average
+    
+def miniValidateGuessTester():
+    for i in range(0, 10):
+            game = MastermindGame(6, 4)
+            results = game.makeGuess([1,2,3,4])
+            guess = PastGuess([1,2,3,4], results)
+            print "----------"
+            print str(guess) + " next guess is : " + str([1,5,6,4])
+            guessesArray = [guess]
+            valid = validateGuess(guessesArray, [1,5,6,4])
+            if valid:
+                print "this is a valid guess based on past guesses"
+            else:
+                print "this is an invalid guess based on past guesses"
 
 def main():
     #getAvgFirstGuess(6, 4, 100)
-    x = MastermindGame(6, 4)
-    y = x.makeGuess([1,2,3,4])
-    z = PastGuess([1,2,3,4], y)
-    print z
+    #miniValidateGuessTester();
 main()
