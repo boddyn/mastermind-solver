@@ -1,5 +1,6 @@
 import random
 import math
+from past_guess import PastGuess
 class MastermindGame:
 
     def __init__(self, numPeople, numTents):
@@ -50,6 +51,9 @@ def getAvgFirstGuess(numPeople, numTents, numGuesses):
     return average
 
 def main():
-    getAvgFirstGuess(6, 4, 100)
-    
+    #getAvgFirstGuess(6, 4, 100)
+    x = MastermindGame(6, 4)
+    y = x.makeGuess([1,2,3,4])
+    z = PastGuess([1,2,3,4], y)
+    print z
 main()
